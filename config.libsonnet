@@ -18,18 +18,18 @@
     },
 
     // Selectors are inserted between {} in Prometheus queries.
-    cadvisorSelector: 'job="cadvisor"',
-    kubeletSelector: 'job="kubelet"',
-    kubeStateMetricsSelector: 'job="kube-state-metrics"',
-    nodeExporterSelector: 'job="node-exporter"',
-    kubeSchedulerSelector: 'job="kube-scheduler"',
-    kubeControllerManagerSelector: 'job="kube-controller-manager"',
-    kubeApiserverSelector: 'job="kube-apiserver"',
-    kubeProxySelector: 'job="kube-proxy"',
+    cadvisorSelector: 'job="integrations/kubernetes/cadvisor"',
+    kubeletSelector: 'job="integrations/kubernetes/kubelet"',
+    kubeStateMetricsSelector: 'job="integrations/kubernetes/kube-state-metrics"',
+    nodeExporterSelector: 'job="integrations/node_exporter"',
+    kubeSchedulerSelector: 'job="integrations/kubernetes/kube-scheduler"',
+    kubeControllerManagerSelector: 'job="integrations/kubernetes/kube-controller-manager"',
+    kubeApiserverSelector: 'job="integrations/kubernetes/kube-apiserver"',
+    kubeProxySelector: 'job="integrations/kubernetes/kube-proxy"',
     podLabel: 'pod',
     hostNetworkInterfaceSelector: 'device!~"veth.+"',
     hostMountpointSelector: 'mountpoint="/"',
-    windowsExporterSelector: 'job="kubernetes-windows-exporter"',
+    windowsExporterSelector: 'job="integrations/windows-exporter"',
     containerfsSelector: 'container!=""',
 
     // List of labels to join for different type of metrics
@@ -44,29 +44,29 @@
 
     // Grafana dashboard IDs are necessary for stable links for dashboards
     grafanaDashboardIDs: {
-      'apiserver.json': std.md5('apiserver.json'),
-      'cluster-total.json': std.md5('cluster-total.json'),
-      'controller-manager.json': std.md5('controller-manager.json'),
-      'k8s-resources-cluster.json': std.md5('k8s-resources-cluster.json'),
-      'k8s-resources-multicluster.json': std.md5('k8s-resources-multicluster.json'),
-      'k8s-resources-namespace.json': std.md5('k8s-resources-namespace.json'),
-      'k8s-resources-node.json': std.md5('k8s-resources-node.json'),
-      'k8s-resources-pod.json': std.md5('k8s-resources-pod.json'),
-      'k8s-resources-windows-cluster.json': std.md5('k8s-resources-windows-cluster.json'),
-      'k8s-resources-windows-namespace.json': std.md5('k8s-resources-windows-namespace.json'),
-      'k8s-resources-windows-pod.json': std.md5('k8s-resources-windows-pod.json'),
-      'k8s-resources-workload.json': std.md5('k8s-resources-workload.json'),
-      'k8s-resources-workloads-namespace.json': std.md5('k8s-resources-workloads-namespace.json'),
-      'k8s-windows-cluster-rsrc-use.json': std.md5('k8s-windows-cluster-rsrc-use.json'),
-      'k8s-windows-node-rsrc-use.json': std.md5('k8s-windows-node-rsrc-use.json'),
-      'kubelet.json': std.md5('kubelet.json'),
-      'namespace-by-pod.json': std.md5('namespace-by-pod.json'),
-      'namespace-by-workload.json': std.md5('namespace-by-workload.json'),
-      'persistentvolumesusage.json': std.md5('persistentvolumesusage.json'),
-      'pod-total.json': std.md5('pod-total.json'),
-      'proxy.json': std.md5('proxy.json'),
-      'scheduler.json': std.md5('scheduler.json'),
-      'workload-total.json': std.md5('workload-total.json'),
+      'apiserver.json': 'k8s-apiserver',
+      'cluster-total.json': 'k8s-cluster-total',
+      'controller-manager.json': 'k8s-controller-manager',
+      'k8s-resources-cluster.json': 'k8s-resources-cluster',
+      'k8s-resources-multicluster.json': 'k8s-resources-multicluster',
+      'k8s-resources-namespace.json': 'k8s-resources-namespace',
+      'k8s-resources-node.json': 'k8s-resources-node',
+      'k8s-resources-pod.json': 'k8s-resources-pod',
+      'k8s-resources-windows-cluster.json': 'k8s-resources-windows-cluster',
+      'k8s-resources-windows-namespace.json': 'k8s-resources-windows-namespace',
+      'k8s-resources-windows-pod.json': 'k8s-resources-windows-pod',
+      'k8s-resources-workload.json': 'k8s-resources-workload',
+      'k8s-resources-workloads-namespace.json': 'k8s-resources-workloads-namespace',
+      'k8s-windows-cluster-rsrc-use.json': 'k8s-windows-cluster-rsrc-use',
+      'k8s-windows-node-rsrc-use.json': 'k8s-windows-node-rsrc-use',
+      'kubelet.json': 'k8s-kubelet',
+      'namespace-by-pod.json': 'k8s-namespace-by-pod',
+      'namespace-by-workload.json': 'k8s-namespace-by-workload',
+      'persistentvolumesusage.json': 'k8s-persistentvolumesusage',
+      'pod-total.json': 'k8s-pod-total',
+      'proxy.json': 'k8s-proxy',
+      'scheduler.json': 'k8s-scheduler',
+      'workload-total.json': 'k8s-workload-total',
     },
 
     // Support for Grafana 7.2+ `$__rate_interval` instead of `$__interval`
@@ -75,29 +75,29 @@
 
     // Config for the Grafana dashboards in the Kubernetes Mixin
     grafanaK8s: {
-      dashboardNamePrefix: 'Kubernetes / ',
-      dashboardTags: ['kubernetes-mixin'],
+      dashboardNamePrefix: 'K8s / ',
+      dashboardTags: ['kubernetes-integration'],
 
       // For links between grafana dashboards, you need to tell us if your grafana
       // servers under some non-root path.
       linkPrefix: '',
 
       // The default refresh time for all dashboards, default to 10s
-      refresh: '10s',
+      refresh: '30s',
       minimumTimeInterval: '1m',
 
       // Timezone for Grafana dashboards:: UTC, browser, ...
-      grafanaTimezone: 'UTC',
+      grafanaTimezone: 'browser',
     },
 
     // Opt-in to multiCluster dashboards by overriding this and the clusterLabel.
-    showMultiCluster: false,
+    showMultiCluster: true,
     clusterLabel: 'cluster',
 
     namespaceLabel: 'namespace',
 
     // Default datasource name
-    datasourceName: 'default',
+    datasourceName: 'duplo-metrics',
 
     // Datasource instance filter regex
     datasourceFilterRegex: '',
